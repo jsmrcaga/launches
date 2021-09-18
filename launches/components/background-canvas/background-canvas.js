@@ -122,19 +122,41 @@ export default function BackgroundCanvas() {
 			const tx = (middle.x - x) / 20;
 			const ty = (middle.y - y) / 20;
 
-			// contextRef.current.translate(
-			// 	(middle.x - x/2) / 2,
-			// 	(middle.y - y/2) / 2
-			// );
-
-			// const sky = new Sky();
-			// sky.draw(contextRef.current);
 			canvasRef.current.style.transform = `translate(${tx}px, ${ty}px)`;
 		}
 
 		window.addEventListener('mousemove', listener);
 
 		return () => window.removeEventListener('mousemove', listener);
+	}, [canvasRef, contextRef]);
+
+	React.useEffect(() => {
+		const listener = e => {
+			if(!canvasRef.current) {
+				return;
+			}
+
+			let {
+				alpha, // rotation axis is . --> rotate image // does not work
+				beta, // rotation axis is <-> --> translate x // apparenly not
+				gamma // rotation axis is i --> translate y // apparently not
+			} = e;
+
+			const MAX_DEG = 30;
+
+			alpha = (alpha / Math.abs(alpha)) * Math.min(Math.abs(alpha), MAX_DEG);
+			beta = (beta / Math.abs(beta)) * Math.min(Math.abs(beta), MAX_DEG);
+			gamma = (gamma / Math.abs(gamma)) * Math.min(Math.abs(gamma), MAX_DEG);
+
+			const tx = gamma;
+			const ty = beta;
+
+			canvasRef.current.style.transform = `translate(${tx}px, ${ty}px)`;
+		}
+
+		window.addEventListener('deviceorientation', listener);
+
+		return () => window.removeEventListener('deviceorientation', listener);
 	}, [canvasRef, contextRef]);
 
 	return (
