@@ -11,13 +11,14 @@ export default function Home() {
 		fetch('https://launches.jocolina.com/api/launches').then(response => {
 			return response.json();
 		}).then(({ result }) => {
-			console.warn('RESULT', result);
 			return setLaunches(result);
+		}).catch(e => {
+			alert('An error occurred, please come back later or contact me on twitter @jsmrcaga');
 		});
 	}, []);
 
 	return (
-		<div style={{ overflow: 'hidden', width: '100%', height: '100%' }}>
+		<div style={{width: '100%', height: '100%' }}>
 			<Head>
 				<title>Upcomng Rocket Launches</title>
 				<meta name="description" content="Live data of upcoming rocket launches" />
