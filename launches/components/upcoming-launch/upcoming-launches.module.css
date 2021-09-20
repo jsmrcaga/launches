@@ -7,6 +7,12 @@
 	padding: 50px;
 }
 
+@media only screen and (max-width: 500px) {
+	.container {
+		align-items: unset;
+	}
+}
+
 .container > div {
 	text-align: center;
 	color: rgba(255, 255, 255, 0.9);
